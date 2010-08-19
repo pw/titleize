@@ -214,6 +214,9 @@ describe Titleize do
 
         %{IF IT’S ALL CAPS, FIX IT} =>
         %{If It’s All Caps, Fix It},
+
+        %{ACME, L.L.C.} =>
+        %{Acme, L.L.C.},
       }.each do |before, after|
         titleize(before).should == after
       end

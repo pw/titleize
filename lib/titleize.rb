@@ -20,14 +20,22 @@ module Titleize
   #   "the good german"    # => "The Good German"
   def titleize(title)
     title = title.dup
-    title.downcase! unless title[/[[:lower:]]/]  # assume all-caps need fixing
-
+    if title[/[[:lower:]]/] # assume all-caps need fixing
+      all_caps = false
+    else
+      all_caps = true
+    end
+      
     phrases(title).map do |phrase|
       words = phrase.split
       words.map do |word|
         def word.capitalize
           # like String#capitalize, but it starts with the first letter
           self.sub(/[[:alpha:]].*/) {|subword| subword.capitalize}
+        end
+
+        if all_caps
+          word.downcase! unless word[/\./]
         end
 
         case word
