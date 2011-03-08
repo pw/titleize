@@ -134,6 +134,18 @@ describe Titleize do
       titleize("IF IT’S ALL CAPS, FIX IT").should == "If It’s All Caps, Fix It"
     end
 
+    it "should capitalize L.L.C." do 
+      titleize("ACME, L.L.C.").should == "Acme, L.L.C."
+    end
+
+    it "should uncapitalize INC. and CO." do
+      titleize("ACME & CO., INC.").should == "Acme & Co., Inc."
+    end
+    
+    it "should not err w/ repeated small words" do
+      titleize("C. V. V. CONSTRUCTION").should == "C. V. V. Construction"
+    end
+    
     # test suite from Perl titlecase
     # http://github.com/ap/titlecase/blob/master/test.pl
     it "should handle edge cases" do
@@ -215,8 +227,6 @@ describe Titleize do
         %{IF IT’S ALL CAPS, FIX IT} =>
         %{If It’s All Caps, Fix It},
 
-        %{ACME, L.L.C.} =>
-        %{Acme, L.L.C.},
       }.each do |before, after|
         titleize(before).should == after
       end
