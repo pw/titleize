@@ -31,11 +31,12 @@ module Titleize
       words.map do |word|
         def word.capitalize
           # like String#capitalize, but it starts with the first letter
+          # e.g. "1st" => "1St", not "1st" => "1st" as w/ String#capitalize
           self.sub(/[[:alpha:]].*/) {|subword| subword.capitalize}
         end
 
         if all_caps
-          word.downcase! unless word[/\./]
+          word.downcase! unless word[/([[:alpha:]]\.){2,}/]
         end
 
         case word
@@ -69,7 +70,8 @@ module Titleize
 
     # rejoin phrases that were split on the '.' from a small word
     if phrases.size > 1
-      phrases[0..-2].each_with_index do |phrase, index|
+      phrases.each_with_index do |phrase, index|
+        break if phrase == phrases.last
         if SMALL_WORDS.include?(phrase.split.last.downcase)
           phrases[index] << " " + phrases.slice!(index + 1)
         end
